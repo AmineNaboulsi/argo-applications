@@ -1,0 +1,42 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "db-inchalahdatabase-1772334460779"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "db-inchalahdatabase-1772334460779"
+  template:
+    metadata:
+      labels:
+        app: "db-inchalahdatabase-1772334460779"
+    spec:
+      containers:
+      - name: "db-inchalahdatabase-1772334460779"
+        image: "postgres:15"
+        ports:
+        - containerPort: 5432
+        env:
+        - name: "POSTGRES_DB"
+          value: "inchalahdatabase"
+        - name: "POSTGRES_USER"
+          value: "inchalahdatabase"
+        - name: "POSTGRES_PASSWORD"
+          value: "inchalahdatabase@@1"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "db-inchalahdatabase-1772334460779-svc"
+  namespace: "client-apps"
+spec:
+  type: "NodePort"
+  selector:
+    app: "db-inchalahdatabase-1772334460779"
+  ports:
+  - port: 5432
+    targetPort: 5432
+    nodePort: 30400
