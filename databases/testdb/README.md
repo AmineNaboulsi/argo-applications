@@ -1,2 +1,0 @@
-# testdb
-Managed by ArgoCD
