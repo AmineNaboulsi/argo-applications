@@ -1,0 +1,42 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "db-osvuo-1772329212968"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "db-osvuo-1772329212968"
+  template:
+    metadata:
+      labels:
+        app: "db-osvuo-1772329212968"
+    spec:
+      containers:
+      - name: "db-osvuo-1772329212968"
+        image: "postgres:15"
+        ports:
+        - containerPort: 5432
+        env:
+        - name: "POSTGRES_DB"
+          value: "osvuo"
+        - name: "POSTGRES_USER"
+          value: "ivq"
+        - name: "POSTGRES_PASSWORD"
+          value: "cdovqdo88089°@"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "db-osvuo-1772329212968-svc"
+  namespace: "client-apps"
+spec:
+  type: "NodePort"
+  selector:
+    app: "db-osvuo-1772329212968"
+  ports:
+  - port: 5432
+    targetPort: 5432
+    nodePort: 30402
