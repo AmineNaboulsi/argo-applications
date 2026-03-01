@@ -1,0 +1,44 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "db-mysqldb-inchalah-1772335362963"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "db-mysqldb-inchalah-1772335362963"
+  template:
+    metadata:
+      labels:
+        app: "db-mysqldb-inchalah-1772335362963"
+    spec:
+      containers:
+      - name: "db-mysqldb-inchalah-1772335362963"
+        image: "mysql:8.0"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: "MYSQL_DATABASE"
+          value: "mysqldb-inchalah"
+        - name: "MYSQL_USER"
+          value: "mysqldbinchalah"
+        - name: "MYSQL_PASSWORD"
+          value: "mysqldb-inchalah@@1A"
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "mysqldb-inchalah@@1A"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "db-mysqldb-inchalah-1772335362963-svc"
+  namespace: "client-apps"
+spec:
+  type: "NodePort"
+  selector:
+    app: "db-mysqldb-inchalah-1772335362963"
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: 31300
