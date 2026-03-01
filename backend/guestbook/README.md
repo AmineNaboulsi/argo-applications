@@ -1,2 +1,0 @@
-# guestbook
-Managed by ArgoCD
