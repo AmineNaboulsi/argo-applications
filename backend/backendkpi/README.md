@@ -1,2 +1,0 @@
-# backendkpi
-Managed by ArgoCD
