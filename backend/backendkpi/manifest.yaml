@@ -1,0 +1,21 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "backendkpi"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "backendkpi"
+  template:
+    metadata:
+      labels:
+        app: "backendkpi"
+    spec:
+      containers:
+      - name: "backendkpi"
+        image: "registry.gitlab.com/data9323209/backend-kpi:latest"
+        ports:
+        - containerPort: 80
