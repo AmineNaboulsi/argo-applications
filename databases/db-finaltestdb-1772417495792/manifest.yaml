@@ -1,0 +1,42 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "db-finaltestdb-1772417495792"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "db-finaltestdb-1772417495792"
+  template:
+    metadata:
+      labels:
+        app: "db-finaltestdb-1772417495792"
+    spec:
+      containers:
+      - name: "db-finaltestdb-1772417495792"
+        image: "postgres:15"
+        ports:
+        - containerPort: 5432
+        env:
+        - name: "POSTGRES_DB"
+          value: "finaltestdb"
+        - name: "POSTGRES_USER"
+          value: "finaltestdb"
+        - name: "POSTGRES_PASSWORD"
+          value: "finaltestdb@@A"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "db-finaltestdb-1772417495792-svc"
+  namespace: "client-apps"
+spec:
+  type: "NodePort"
+  selector:
+    app: "db-finaltestdb-1772417495792"
+  ports:
+  - port: 5432
+    targetPort: 5432
+    nodePort: 30400
