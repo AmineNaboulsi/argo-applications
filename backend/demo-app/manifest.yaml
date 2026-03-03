@@ -1,0 +1,23 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "demo-app"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "demo-app"
+  template:
+    metadata:
+      labels:
+        app: "demo-app"
+    spec:
+      containers:
+      - name: "demo-app"
+        image: "registry.gitlab.com/home-server5364202/demo:latest"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: "pull-secret-demo-app"
