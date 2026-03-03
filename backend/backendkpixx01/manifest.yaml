@@ -1,0 +1,42 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "backendkpixx01"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "backendkpixx01"
+  template:
+    metadata:
+      labels:
+        app: "backendkpixx01"
+    spec:
+      containers:
+      - name: "backendkpixx01"
+        image: "registry.gitlab.com/data9323209/backend-kpi:latest"
+        ports:
+        - containerPort: 80
+        env:
+        - name: "database_url"
+          value: "postgresql+psycopg2://finacsys:finacsys@postgres.shared:5432/dw_db"
+        - name: "jwt_secret_key"
+          value: "bZQwY6UE4zV1p2DRjxOhL5DiGuqwUhnXvTQnxhC9ASM"
+        - name: "jwt_algorithm"
+          value: "HS256"
+        - name: "jwt_expire_minutes"
+          value: "1440"
+        - name: "cors_origins"
+          value: "http://localhost:3000,https://airflow.dashypay.com"
+        - name: "default_username"
+          value: "admin"
+        - name: "default_password"
+          value: "admin"
+        - name: "app_title"
+          value: "Analytics API"
+        - name: "app_version"
+          value: "1.0.0"
+      imagePullSecrets:
+      - name: "pull-secret-backendkpixx01"
