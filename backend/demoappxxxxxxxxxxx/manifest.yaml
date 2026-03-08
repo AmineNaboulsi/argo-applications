@@ -1,0 +1,56 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "demoappxxxxxxxxxxx"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "demoappxxxxxxxxxxx"
+  template:
+    metadata:
+      labels:
+        app: "demoappxxxxxxxxxxx"
+    spec:
+      containers:
+      - name: "demoappxxxxxxxxxxx"
+        image: "registry.gitlab.com/home-server5364202/demo:latest"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: "pull-secret-demoappxxxxxxxxxxx"
+---
+kind: "Service"
+metadata:
+  name: "demoappxxxxxxxxxxx-svc"
+  namespace: "client-apps"
+spec:
+  type: "ClusterIP"
+  ports:
+  - port: 80
+    targetPort: 8010
+    nodePort: 0
+---
+kind: "Ingress"
+metadata:
+  name: "demoappxxxxxxxxxxx-ingress"
+  namespace: "client-apps"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  rules:
+  - host: "demoappxxxxxxxxxxx-bxbks1.naboulsiamine.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: "Prefix"
+        backend:
+          service:
+            name: "demoappxxxxxxxxxxx-svc"
+            port:
+              number: 80
