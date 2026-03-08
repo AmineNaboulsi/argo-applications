@@ -1,0 +1,64 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "demoappv3"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "demoappv3"
+  template:
+    metadata:
+      labels:
+        app: "demoappv3"
+    spec:
+      containers:
+      - name: "demoappv3"
+        image: "registry.gitlab.com/home-server5364202/demo:latest"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: "pull-secret-demoappv3"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "demoappv3-svc"
+  namespace: "client-apps"
+spec:
+  type: "ClusterIP"
+  selector:
+    app: "demoappv3"
+  ports:
+  - port: 80
+    targetPort: 8010
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "demoappv3-ingress"
+  namespace: "client-apps"
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - host: "demoappv3-e43eut.naboulsiamine.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: "Prefix"
+        backend:
+          service:
+            name: "demoappv3-svc"
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - "demoappv3-e43eut.naboulsiamine.com"
+    secretName: "demoappv3-tls"
