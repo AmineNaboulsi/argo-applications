@@ -1,2 +1,0 @@
-# demoappxxxxxxxxxxx
-Managed by ArgoCD
