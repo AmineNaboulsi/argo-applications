@@ -1,2 +1,0 @@
-# demopro
-Managed by ArgoCD
