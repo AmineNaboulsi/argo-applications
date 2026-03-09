@@ -18,7 +18,7 @@ spec:
       - name: "demojoj"
         image: "registry.gitlab.com/home-server5364202/demo:latest"
         ports:
-        - containerPort: 80
+        - containerPort: 8010
         envFrom:
         - configMapRef:
             name: "demojoj-config"
