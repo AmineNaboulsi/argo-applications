@@ -40,12 +40,6 @@ spec:
   - port: 80
     targetPort: 8010
 ---
-apiVersion: "v1"
-kind: "ConfigMap"
-metadata:
-  name: "demojoj-config"
-  namespace: "client-apps"
----
 apiVersion: "networking.k8s.io/v1"
 kind: "Ingress"
 metadata:
@@ -73,3 +67,11 @@ spec:
   - hosts:
     - "demojoj-gjs0p3.naboulsiamine.com"
     secretName: "demojoj-tls"
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "demojoj-config"
+  namespace: "client-apps"
+data:
+  AA: "AA"
