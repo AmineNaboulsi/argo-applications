@@ -1,0 +1,2 @@
+# demopromax
+Managed by ArgoCD
