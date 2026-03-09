@@ -1,0 +1,2 @@
+# demojoj
+Managed by ArgoCD
