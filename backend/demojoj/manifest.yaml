@@ -22,8 +22,6 @@ spec:
         envFrom:
         - configMapRef:
             name: "demojoj-config"
-        - secretRef:
-            name: "demojoj-env-secret"
       imagePullSecrets:
       - name: "pull-secret-demojoj"
 ---
