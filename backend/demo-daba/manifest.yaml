@@ -1,0 +1,64 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "demo-daba"
+  namespace: "client-apps"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: "demo-daba"
+  template:
+    metadata:
+      labels:
+        app: "demo-daba"
+    spec:
+      containers:
+      - name: "demo-daba"
+        image: "registry.gitlab.com/home-server5364202/demo:latest"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: "pull-secret-demo-daba"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "demo-daba-svc"
+  namespace: "client-apps"
+spec:
+  type: "ClusterIP"
+  selector:
+    app: "demo-daba"
+  ports:
+  - port: 80
+    targetPort: 8010
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "demo-daba-ingress"
+  namespace: "client-apps"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - host: "demo-daba-oguipz.naboulsiamine.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: "Prefix"
+        backend:
+          service:
+            name: "demo-daba-svc"
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - "demo-daba-oguipz.naboulsiamine.com"
+    secretName: "demo-daba-tls"
